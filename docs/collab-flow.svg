@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+  <defs>
+    <style>
+      .title{font:700 28px sans-serif;fill:#111}
+      .h{font:700 16px sans-serif;fill:#111}
+      .t{font:14px sans-serif;fill:#222}
+      .s{font:12px sans-serif;fill:#444}
+      .box{stroke-width:2;rx:14;ry:14}
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#374151"/>
+    </marker>
+  </defs>
+  <rect width="1400" height="900" fill="#fafafa"/>
+  <text x="700" y="48" text-anchor="middle" class="title">Grok Bot · Codex · Claude Code 协作闭环</text>
+  <rect x="40" y="80" width="320" height="220" class="box" fill="#f3f4f6" stroke="#9ca3af"/>
+  <text x="200" y="112" text-anchor="middle" class="h">前置部署</text>
+  <rect x="60" y="130" width="280" height="44" class="box" fill="#fff" stroke="#6b7280"/>
+  <text x="200" y="157" text-anchor="middle" class="t">共用仓库 E:\workspace\agent-collab</text>
+  <rect x="60" y="186" width="280" height="44" class="box" fill="#fff" stroke="#6b7280"/>
+  <text x="200" y="213" text-anchor="middle" class="t">Codex CLI + Claude Code PATH</text>
+  <rect x="60" y="242" width="280" height="44" class="box" fill="#fff" stroke="#6b7280"/>
+  <text x="200" y="269" text-anchor="middle" class="t">Git 交接层 / GitHub 连接</text>
+  <rect x="420" y="110" width="160" height="70" class="box" fill="#fff7ed" stroke="#ea580c"/>
+  <text x="500" y="140" text-anchor="middle" class="h">你提出目标</text>
+  <text x="500" y="162" text-anchor="middle" class="s">验收标准由你确认</text>
+  <rect x="640" y="100" width="220" height="90" class="box" fill="#ecfdf5" stroke="#059669"/>
+  <text x="750" y="132" text-anchor="middle" class="h">Grok Bot 调度</text>
+  <text x="750" y="156" text-anchor="middle" class="s">任务卡 TASKS/ · 盯进度 · 汇总</text>
+  <text x="750" y="176" text-anchor="middle" class="s">不抢写同一业务文件</text>
+  <rect x="920" y="100" width="220" height="90" class="box" fill="#eff6ff" stroke="#2563eb"/>
+  <text x="1030" y="132" text-anchor="middle" class="h">Codex 开发</text>
+  <text x="1030" y="156" text-anchor="middle" class="s">独立分支实现与自测</text>
+  <text x="1030" y="176" text-anchor="middle" class="s">提交 PR / 变更结果</text>
+  <rect x="920" y="260" width="220" height="90" class="box" fill="#f5f3ff" stroke="#7c3aed"/>
+  <text x="1030" y="292" text-anchor="middle" class="h">Claude Code 审查</text>
+  <text x="1030" y="316" text-anchor="middle" class="s">只读差异与意见</text>
+  <text x="1030" y="336" text-anchor="middle" class="s">默认不写生产分支</text>
+  <rect x="640" y="260" width="220" height="90" class="box" fill="#fff7ed" stroke="#ea580c"/>
+  <text x="750" y="292" text-anchor="middle" class="h">你批准</text>
+  <text x="750" y="316" text-anchor="middle" class="s">合并 / 部署 / 密钥</text>
+  <text x="750" y="336" text-anchor="middle" class="s">关键操作必须人工点头</text>
+  <line x1="580" y1="145" x2="635" y2="145" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="860" y1="145" x2="915" y2="145" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="888" y="132" class="s" fill="#2563eb">任务卡</text>
+  <line x1="1030" y1="190" x2="1030" y2="255" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="1040" y="228" class="s" fill="#7c3aed">PR / 差异</text>
+  <path d="M920,305 C880,305 880,145 920,145" fill="none" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="860" y="230" class="s" fill="#dc2626">有问题回修</text>
+  <line x1="920" y1="305" x2="865" y2="305" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="888" y="292" class="s">通过后汇总</text>
+  <rect x="420" y="400" width="720" height="150" class="box" fill="#fff" stroke="#0f766e" stroke-dasharray="8 6"/>
+  <text x="780" y="432" text-anchor="middle" class="h">共用仓库交接层 · agent-collab</text>
+  <rect x="460" y="460" width="180" height="60" class="box" fill="#ecfdf5" stroke="#059669"/>
+  <text x="550" y="495" text-anchor="middle" class="t">TASKS/ 任务卡</text>
+  <rect x="690" y="460" width="180" height="60" class="box" fill="#eff6ff" stroke="#2563eb"/>
+  <text x="780" y="495" text-anchor="middle" class="t">分支 / PR 差异</text>
+  <rect x="920" y="460" width="180" height="60" class="box" fill="#f5f3ff" stroke="#7c3aed"/>
+  <text x="1010" y="495" text-anchor="middle" class="t">审查意见</text>
+  <rect x="40" y="600" width="1320" height="240" class="box" fill="#fffbeb" stroke="#d97706"/>
+  <text x="700" y="640" text-anchor="middle" class="h">从试跑小任务到完整闭环</text>
+  <rect x="100" y="680" width="300" height="100" class="box" fill="#fff" stroke="#d97706"/>
+  <text x="250" y="720" text-anchor="middle" class="h">1. 小任务人工盯一遍</text>
+  <text x="250" y="748" text-anchor="middle" class="s">约一小时可完成的功能</text>
+  <rect x="520" y="680" width="300" height="100" class="box" fill="#fff" stroke="#d97706"/>
+  <text x="670" y="720" text-anchor="middle" class="h">2. 保存为 Grok Bot skill</text>
+  <text x="670" y="748" text-anchor="middle" class="s">固化步骤，减少口头转述</text>
+  <rect x="940" y="680" width="340" height="100" class="box" fill="#fff" stroke="#d97706"/>
+  <text x="1110" y="720" text-anchor="middle" class="h">3. 稳定后自动触发</text>
+  <text x="1110" y="748" text-anchor="middle" class="s">routine / 事件驱动</text>
+  <line x1="400" y1="730" x2="515" y2="730" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="820" y1="730" x2="935" y2="730" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="700" y="875" text-anchor="middle" class="s" fill="#6b7280">数据不靠聊天互相转述；以仓库任务卡与 PR 为唯一交接台</text>
+</svg>
