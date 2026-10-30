@@ -38,3 +38,10 @@
 [2026-10-30] [Claude Code] 独立 `claude` CLI 登录结论：人类本人连续发起 3 次 `claude auth login`，每次都在浏览器**还没来得及跳出授权页**之前，CLI 就已经 `Login failed: Request failed with status code 403` 退出了（不是授权码兑换失败，是启动后的后台请求被挡）。现象和此前 `TASKS/claude-auth-run.log` 记录的一致，确认是这台机器的网络环境（代理/防火墙/TLS 检测）在拦截 `claude` CLI 对 Cloudflare 的请求，与授权操作本身无关，重试无效。**暂不建议继续走独立 CLI headless 登录这条路**；"组长"若要 headless 调用 Claude，目前可行的替代方案待人类决定（例如改用 `claude auth login --console`，但那是 API 按量计费，涉及账单变更，需要人类本人拍板，不是我能自行切换的）。独立 `claude` CLI 目前仍是未登录状态。
 
 [2026-10-30] [Claude Code] 补充：人类之后又在**另一个独立终端**（跟我用的终端完全无关的 shell 会话）自己跑了一次 `claude auth login`，结果仍是同一模式——秒级 403，浏览器没来得及走到授权页。连续 4 次独立复现（3 次经我这边终端 + 1 次人类自己的终端）都一致，进一步坐实是网络层（代理/防火墙/TLS 检测）拦截，与具体终端/shell 无关。结论不变：这条路暂时走不通，等网络环境排查或换 `--console` 方案（待人类决定）。
+
+[2026-10-30] [Claude Code] **根因定位（人类要求排查后的结论）**：这台机器确实配了本地代理（`HTTP_PROXY`/`HTTPS_PROXY` → `http://127.0.0.1:7897`，典型 Clash 类工具端口）。用 `curl` 直接测 CLI 实际调用的真实 token 端点 `https://platform.claude.com/v1/oauth/token`：
+  - **走代理**：返回 `400 Bad Request` + `{"type":"invalid_request_error","message":"Invalid request format"}`（CF-RAY 落在 NRT/东京节点）——说明走代理能正常打到 Anthropic 后端，请求格式校验是正常业务逻辑。
+  - **直连不走代理**：返回 `403 Forbidden` + `{"type":"forbidden","message":"Request not allowed"}`（CF-RAY 落在 LAX/洛杉矶节点）——是 Anthropic 边缘对这台机器的直连 IP 的明确拒绝（区域/IP 层面），不是代理/防火墙在拦截，方向反了。
+  - 真正原因：`claude` CLI 的登录流程**不读标准 `HTTP_PROXY`/`HTTPS_PROXY`**，而是用自己专属的变量名（从二进制里 grep 出来的：`CLAUDE_CODE_HTTPS_PROXY`/`CLAUDE_CODE_HTTP_PROXY`/`CLAUDE_CODE_PROXY_URL`），所以即使系统代理在跑，登录请求还是走了直连，撞上了区域拒绝。
+  - 设置这三个专属变量后测试：一次 10 秒内没有再秒 403（明显好转，走到了真正等待贴码的状态）；但另一次设置后仍在稍后触发了 403——怀疑登录流程里还有一次轮询/交换调用没吃到这几个变量，没能根治。
+  - 我这边卡住的地方：Claude in Chrome 扩展未连接，内置浏览器又没登录人类的账号（我不会代为输入邮箱密码），所以"点 Authorize"这一步目前只能由人类本人在弹出的浏览器里完成，我没法越过这一步去验证代理变量方案是否能 100% 根治。
