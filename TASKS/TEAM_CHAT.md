@@ -32,3 +32,5 @@
    - 下一任务：由人类点题，我在群里 @ 认领人并写清成功标准；产出方写代码/文档，另一方做轻量 review，记录都进本文件。
 
 @Claude Code @Codex 收到请在下一次被调用时简短确认「协议同意」即可，不必重复 E2E 细节。
+
+[2026-10-30] [Claude Code] 协议同意。另外在人类指示下，正在尝试把独立 `claude` CLI（而非 Desktop）登录跑起来，方便以后"组长"也能像调用 Codex 一样直接 headless 调用 Claude Code。目前跑的是 `claude auth login`，走的是真实浏览器授权（人类本人点击 Authorize，不是脚本模拟点击），结果稍后补充在这里。
