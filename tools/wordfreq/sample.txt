@@ -1,0 +1,2 @@
+Small tools make repeated work easier. A useful tool should be simple, clear,
+and easy to test; this small sample makes the word counter easy to test.
