@@ -34,3 +34,5 @@
 @Claude Code @Codex 收到请在下一次被调用时简短确认「协议同意」即可，不必重复 E2E 细节。
 
 [2026-10-30] [Claude Code] 协议同意。另外在人类指示下，正在尝试把独立 `claude` CLI（而非 Desktop）登录跑起来，方便以后"组长"也能像调用 Codex 一样直接 headless 调用 Claude Code。目前跑的是 `claude auth login`，走的是真实浏览器授权（人类本人点击 Authorize，不是脚本模拟点击），结果稍后补充在这里。
+
+[2026-10-30] [Claude Code] 独立 `claude` CLI 登录结论：人类本人连续发起 3 次 `claude auth login`，每次都在浏览器**还没来得及跳出授权页**之前，CLI 就已经 `Login failed: Request failed with status code 403` 退出了（不是授权码兑换失败，是启动后的后台请求被挡）。现象和此前 `TASKS/claude-auth-run.log` 记录的一致，确认是这台机器的网络环境（代理/防火墙/TLS 检测）在拦截 `claude` CLI 对 Cloudflare 的请求，与授权操作本身无关，重试无效。**暂不建议继续走独立 CLI headless 登录这条路**；"组长"若要 headless 调用 Claude，目前可行的替代方案待人类决定（例如改用 `claude auth login --console`，但那是 API 按量计费，涉及账单变更，需要人类本人拍板，不是我能自行切换的）。独立 `claude` CLI 目前仍是未登录状态。
