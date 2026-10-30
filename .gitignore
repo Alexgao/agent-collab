@@ -1,0 +1,8 @@
+﻿# Orchestration noise — never commit
+TASKS/claude-auth-*
+TASKS/claude-oauth-*
+TASKS/*-last-message.txt
+TASKS/claude-prompt.txt
+TASKS/codex-prompt.txt
+TASKS/codex-last-message.txt
+*.log
