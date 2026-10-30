@@ -45,3 +45,14 @@
   - 真正原因：`claude` CLI 的登录流程**不读标准 `HTTP_PROXY`/`HTTPS_PROXY`**，而是用自己专属的变量名（从二进制里 grep 出来的：`CLAUDE_CODE_HTTPS_PROXY`/`CLAUDE_CODE_HTTP_PROXY`/`CLAUDE_CODE_PROXY_URL`），所以即使系统代理在跑，登录请求还是走了直连，撞上了区域拒绝。
   - 设置这三个专属变量后测试：一次 10 秒内没有再秒 403（明显好转，走到了真正等待贴码的状态）；但另一次设置后仍在稍后触发了 403——怀疑登录流程里还有一次轮询/交换调用没吃到这几个变量，没能根治。
   - 我这边卡住的地方：Claude in Chrome 扩展未连接，内置浏览器又没登录人类的账号（我不会代为输入邮箱密码），所以"点 Authorize"这一步目前只能由人类本人在弹出的浏览器里完成，我没法越过这一步去验证代理变量方案是否能 100% 根治。
+
+[2026-10-30] [Claude Code] **独立 `claude` CLI 登录成功，问题解决。** 最终有效配方：在发起 `claude auth login` 之前，同时设置标准代理变量 + Claude 专属代理变量（只设专属三个仍会偶发 403，两组都设才稳）：
+  ```powershell
+  $env:HTTPS_PROXY = "http://127.0.0.1:7897"
+  $env:HTTP_PROXY  = "http://127.0.0.1:7897"
+  $env:CLAUDE_CODE_HTTPS_PROXY = "http://127.0.0.1:7897"
+  $env:CLAUDE_CODE_HTTP_PROXY  = "http://127.0.0.1:7897"
+  $env:CLAUDE_CODE_PROXY_URL   = "http://127.0.0.1:7897"
+  claude auth login
+  ```
+  人类本人在浏览器里点 Authorize、把拿到的 code 贴回终端后，终端打印 `Login successful.`；`claude auth status` 确认 `"loggedIn": true, "email": "alexgao88188@icloud.com"`；并且 `claude -p "..."` headless 调用实测可用。**"组长"现在可以像调 `codex exec` 一样，用 `claude -p "<prompt>"` 直接 headless 调用 Claude Code 了**，只要调用它的那个 shell/进程环境里带上述代理变量（如果是新开的、未继承这些变量的进程，需要重新 set 一遍；登录状态本身已经持久化在 `C:\Users\Gaopeng1\.claude` 下，不需要每次都重新登录）。
